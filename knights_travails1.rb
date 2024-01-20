@@ -1,36 +1,42 @@
 # frozen_string_literal: true
 
+BOARD_SIZE = 2
+
 def knight_moves(start, finish)
   available_squares = []
-  0.upto(7) do |i|
-    0.upto(7) do |j|
+  0.upto(BOARD_SIZE) do |i|
+    0.upto(BOARD_SIZE) do |j|
       available_squares.push([i, j])
     end
   end
 
-  p Node.new(start, available_squares, finish)
+  root = Node.new(start, available_squares, finish)
+  p root.square
+
 end
 
 # Nodes in a graph representing the possible moves of the knight.
 class Node
-  attr_accessor :square, :legal_moves
-
   @@translations = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]]
+
+  attr_accessor :square, :legal_moves
 
   def initialize(square, available_squares, finish)
     @square = square
-    @legal_moves = find_legal_moves(available_squares - [square], finish) unless square == finish
+    @legal_moves = square == finish ? [] : find_legal_moves(available_squares - [square], finish)
   end
 
   def find_legal_moves(available_squares, finish)
-    return nil if available_squares.empty?
-
     moves = []
+    return moves if available_squares.empty?
+
     @@translations.each do |translation|
       new_square = [@square[0] + translation[0], @square[1] + translation[1]]
-      if available_squares.include?(new_square) && new_square[0].between?(0, 7) && new_square[1].between?(0, 7)
-        moves.push(Node.new(new_square, available_squares, finish))
-      end
+      next unless available_squares.include?(new_square) &&
+                  new_square[0].between?(0, BOARD_SIZE) &&
+                  new_square[1].between?(0, BOARD_SIZE)
+
+      moves.push(Node.new(new_square, available_squares, finish))
     end
     moves
   end
