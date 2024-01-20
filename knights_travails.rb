@@ -2,11 +2,11 @@
 
 BOARD_SIZE = 7
 
-# Stores the
+# Stores the knight moves in a graph, where each node is a square on the board.
 class Move
-  TRANSLATIONS = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]].freeze
-
   attr_reader :square, :visited, :legal_moves
+
+  TRANSLATIONS = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]].freeze
 
   def initialize(square, visited = [])
     @square = square
